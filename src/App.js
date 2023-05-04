@@ -1,25 +1,46 @@
 import { useState } from 'react'
 import Todos from './components/Todos'
-
 import User from './components/User'
+import Error from './components/Error'
 function App() {
   const [users, setUsers] = useState([])
   const [todo, setTodo] = useState([])
-
   const [display, setDisplay] = useState(false)
+  const [errorFlag, setErrorFlag] = useState(false)
 
   const fetchTodos = () => {
     fetch('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error('Error ')
+        }
+      })
       .then((json) => setTodo(json))
+      .catch((error) => {
+        setErrorFlag(true)
+      })
     setDisplay(true)
   }
 
   const fetchUsers = () => {
     fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error('Error ')
+        }
+      })
       .then((json) => setUsers(json))
+      .catch((error) => {
+        setErrorFlag(true)
+      })
     setDisplay(false)
+  }
+  if (errorFlag) {
+    return <Error />
   }
 
   return (

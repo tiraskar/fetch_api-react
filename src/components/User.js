@@ -7,5 +7,4 @@ const User = ({ name, username, email }) => {
     </div>
   )
 }
-
 export default User
